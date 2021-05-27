@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A CodeCommit Repo and Cloud9 Environment for Basic Development
+Parameters:
+  C9NameParam:
+    Type: String
+    Default: UnirAWSIDE
+    Description: Cloud9 Environment name
+  C9DescParam:
+    Type: String
+    Default: Entorno de desarrollo para caso practico 1 de EU DevOps & Cloud UNIR
+    Description: Cloud9 Environment Description
+  InstanceTypeParam:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+    Description: Enter the instance type value. Only t2.micro is allowed
+  ImageIdParam:
+    Type: String
+    Default: amazonlinux-2-x86_64
+    Description: Amazon AMI to use for Cloud9 instance
+  SubnetIdParam:
+    Type: String
+    Default: subnet-92fe8cf4
+    Description: VPC where to run Cloud9 instance
+  StopTimeMinutesParam:
+    Type: Number
+    Default: 30
+    Description: Timeout in minutes before stopping Cloud9 Environment instances
+Resources:
+  MyC9Environment:
+    Type: 'AWS::Cloud9::EnvironmentEC2'
+    Properties:
+      Repositories:
+        - RepositoryUrl: https://github.com/rgaleanog/todo-list-serverless.git
+          PathComponent: src/todo-list-serverless.git
+      Description: !Ref C9DescParam
+      Name: !Ref C9NameParam
+      InstanceType: !Ref InstanceTypeParam
+      ImageId: !Ref ImageIdParam
+      #SubnetId: !Ref SubnetIdParam
+      #      AutomaticStopTimeMinutes: !Ref StopTimeMinutesParam
